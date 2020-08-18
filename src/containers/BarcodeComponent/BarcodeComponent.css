@@ -17,3 +17,8 @@
 .ComponentWrapper {
   margin: 20px 0;
 }
+
+.TimerWrapper {
+  font-weight: 600;
+  font-size: 1.2rem;
+}

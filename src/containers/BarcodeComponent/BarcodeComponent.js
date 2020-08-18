@@ -6,7 +6,7 @@ import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 const BarcodeComponent = (props) => {
   //Creating and initializing states for barcode and countdown time
   const [countDownTimer, setCountDownTimer] = useState('');
-  const [barcode, setBarcode] = useState(' ');
+  const [barcode, setBarcode] = useState('');
 
   //Introducing side effects after render cycle to avoid blocking of component rendering. Passing empty array to avoid unnecessary re-rendering.
   useEffect(() => {
@@ -22,6 +22,9 @@ const BarcodeComponent = (props) => {
       //Coverting UTC ISO Date string to localized Date string
       let timerCountdown = new Date(new Date(responseData.expiresAt).getTime());
       setCountDownTimer(timerCountdown);
+    }).catch((err) => {
+      //Any error logic goes here
+      console.log(err);
     });
   };
 
@@ -48,14 +51,13 @@ const BarcodeComponent = (props) => {
     return () => clearTimeout(countDownTimer);
   });
   
-  
   const fetchButtonComponent = [];
   Object.keys(expiryTime).forEach((key) => {
     if (!expiryTime[key]) {
       return;
     }
     fetchButtonComponent.push(
-      <p key={expiryTime[key]}>
+      <p key={expiryTime[key]} className="TimerWrapper">
         {expiryTime['minutes']}:{expiryTime['seconds']}{" "}
       </p>
     );
@@ -64,11 +66,11 @@ const BarcodeComponent = (props) => {
   return (
     <Auxiliary>
       <h1>Barcode</h1>
-      <Barcode value={barcode}/>
+      {barcode.length ? <Barcode value={barcode}/> : ''}
       <div className="ComponentWrapper">
         {fetchButtonComponent.length ? fetchButtonComponent : <button className="ButtonStyle" onClick={fetchBarcodeHandler}>Fetch Barcode</button>}
       </div>
-      
+
     </Auxiliary>
   );
 };

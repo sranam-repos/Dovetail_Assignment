@@ -18,10 +18,36 @@ const BarcodeComponent = (props) => {
     fetch('https://jet-gull-7204.twil.io/generate-barcode').then(response => 
       response.json()
     ).then(responseData => {
-      setBarcode(responseData.barcode);
+      setBarcode(responseData.barcode.toString());
+      //Coverting UTC ISO Date string to localized Date string
+      let timerCountdown = new Date(new Date(responseData.expiresAt).getTime());
+      setCountDownTimer(timerCountdown);
     });
   };
 
+  //Function to calculate and return remaining time for expiry
+  const getExpiryTime = () => {
+    const timeRemaining = new Date(countDownTimer) - new Date();
+    let timeLeft = {};
+    if(timeRemaining > 0) {
+      timeLeft = {
+        days: Math.floor(timeRemaining / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((timeRemaining / (1000 * 60 * 60)) % 24), 
+        minutes: Math.floor((timeRemaining / 1000 / 60) % 60),
+        seconds: Math.floor((timeRemaining / 1000) % 60)
+      }
+    }
+    return timeLeft;
+  }
+  //State to manage expiry time
+  const [expiryTime, setExpiryTime] = useState('');
+
+  useEffect(() => {
+    setTimeout(() => {
+      setExpiryTime(getExpiryTime());
+    },1000);
+  });
+  
   return (
     <Auxiliary>
       <h1>Barcode</h1>

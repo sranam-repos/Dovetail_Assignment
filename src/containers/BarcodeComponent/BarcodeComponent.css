@@ -1,16 +1,19 @@
 .ButtonStyle {
-    cursor: pointer;
-    font-size: 14px;
-    padding: 8px 15px;
-    background: #0169ae;
-    color: #fff;
-    border: 1px solid #0169ae;
-    border-radius: 15px;
-    outline: 0;
-    margin: 15px 0;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 15px;
+  background: #0169ae;
+  color: #fff;
+  border: 1px solid #0169ae;
+  border-radius: 15px;
+  outline: 0;
 }
   
 .ButtonStyle:hover {
   background-color: #12b89f;
   border: 1px solid #12b89f;
+}
+
+.ComponentWrapper {
+  margin: 20px 0;
 }

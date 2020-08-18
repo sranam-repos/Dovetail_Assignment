@@ -31,8 +31,6 @@ const BarcodeComponent = (props) => {
     let timeLeft = {};
     if(timeRemaining > 0) {
       timeLeft = {
-        days: Math.floor(timeRemaining / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((timeRemaining / (1000 * 60 * 60)) % 24), 
         minutes: Math.floor((timeRemaining / 1000 / 60) % 60),
         seconds: Math.floor((timeRemaining / 1000) % 60)
       }
@@ -46,14 +44,31 @@ const BarcodeComponent = (props) => {
     setTimeout(() => {
       setExpiryTime(getExpiryTime());
     },1000);
+    //on unmount clear timeout
+    return () => clearTimeout(countDownTimer);
+  });
+  
+  
+  const fetchButtonComponent = [];
+  Object.keys(expiryTime).forEach((key) => {
+    if (!expiryTime[key]) {
+      return;
+    }
+    fetchButtonComponent.push(
+      <p key={expiryTime[key]}>
+        {expiryTime['minutes']}:{expiryTime['seconds']}{" "}
+      </p>
+    );
   });
   
   return (
     <Auxiliary>
       <h1>Barcode</h1>
       <Barcode value={barcode}/>
-      <p>Placeholder for timer</p>
-      <button className="ButtonStyle" onClick = {fetchBarcodeHandler}>Fetch Barcode</button>
+      <div className="ComponentWrapper">
+        {fetchButtonComponent.length ? fetchButtonComponent : <button className="ButtonStyle" onClick={fetchBarcodeHandler}>Fetch Barcode</button>}
+      </div>
+      
     </Auxiliary>
   );
 };
